@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.com.alura.tdd.modelo.Desempenho;
@@ -20,54 +21,34 @@ import br.com.alura.tdd.modelo.Funcionario;
  */
 public class ReajusteServiceTest {
     
+    private ReajusteService service;
+    private Funcionario funcionario;
+    
+    
+    @BeforeEach
+    public void inicializar() {
+        this.service = new ReajusteService();
+        this.funcionario = new Funcionario("Rafaela", LocalDate.now(), new BigDecimal("5000"));
+    }
+
     @Test
     public void reajusteDeveriaSerTresPorcentoQuandoReajusteForADesejar() {
-        BigDecimal tresPorcento = new BigDecimal("0.03");
-        BigDecimal salarioAtual = new BigDecimal("3000");        
-        BigDecimal valorAcrescentado = salarioAtual.multiply(tresPorcento);
-        BigDecimal salarioEsperado = new BigDecimal("0.00");
-        salarioEsperado = (salarioAtual.add(valorAcrescentado));
-        
-        ReajusteService service = new ReajusteService();
-        Funcionario funcionario = new Funcionario("Ana", LocalDate.now(), salarioAtual);
-
         service.concederReajuste(funcionario, Desempenho.A_DESEJAR);
-
-        assertEquals(salarioEsperado, funcionario.getSalario());
+        assertEquals(new BigDecimal("5150.00"), funcionario.getSalario());
 
     }
 
     @Test
-    public void reajusteDeveriaSerTresPorcentoQuandoReajusteForBom() {
-        BigDecimal tresPorcento = new BigDecimal("0.15");
-        BigDecimal salarioAtual = new BigDecimal("5000");        
-        BigDecimal valorAcrescentado = salarioAtual.multiply(tresPorcento);
-        BigDecimal salarioEsperado = new BigDecimal("0.00");
-        salarioEsperado = (salarioAtual.add(valorAcrescentado));
-        
-        ReajusteService service = new ReajusteService();
-        Funcionario funcionario = new Funcionario("Rogério", LocalDate.now(), salarioAtual);
-
+    public void reajusteDeveriaSerTresPorcentoQuandoReajusteForBom() {      
         service.concederReajuste(funcionario, Desempenho.BOM);
-
-        assertEquals(salarioEsperado, funcionario.getSalario());
+        assertEquals(new BigDecimal("5750.00"), funcionario.getSalario());
 
     }
 
     @Test
     public void reajusteDeveriaSerTresPorcentoQuandoReajusteForOtimo() {
-        BigDecimal tresPorcento = new BigDecimal("0.20");
-        BigDecimal salarioAtual = new BigDecimal("3000");        
-        BigDecimal valorAcrescentado = salarioAtual.multiply(tresPorcento);
-        BigDecimal salarioEsperado = new BigDecimal("0.00");
-        salarioEsperado = (salarioAtual.add(valorAcrescentado));
-        
-        ReajusteService service = new ReajusteService();
-        Funcionario funcionario = new Funcionario("Rogério", LocalDate.now(), salarioAtual);
-
         service.concederReajuste(funcionario, Desempenho.OTIMO);
-
-        assertEquals(salarioEsperado, funcionario.getSalario());
+        assertEquals(new BigDecimal("6000.00"), funcionario.getSalario());
 
     }
 }
